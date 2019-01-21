@@ -26,6 +26,16 @@ class Event {
      */
     public $referer = null;
     /**
+     * @var array
+     */
+    public $utm = [
+        'source' => '',
+        'medium' => '',
+        'campaign' => '',
+        'term' => '',
+        'content' => ''
+    ];
+    /**
      * @var Field[]
      */
     public $fields = [];
@@ -116,6 +126,24 @@ class Event {
     public function setFields($fields) {
         $this->fields = [];
         $this->addFields($fields);
+    }
+
+    /**
+     * @param array $utmData {
+     *  @var string $source
+     *  @var string $medium
+     *  @var string $campaign
+     *  @var string $term
+     *  @var string $content
+     * }
+     */
+    public function setUTM($utmData) {
+        foreach ($utmData as $key => $value) {
+            if (!in_array($key, ['source', 'medium', 'campaign', 'term', 'content'])) {
+                throw new \RuntimeException('Invalid utm data, keys shoud be: "source", "medium", "campaign", "term" and "content"');
+            }
+        }
+        $this->utm = $utmData;
     }
 
     /**
